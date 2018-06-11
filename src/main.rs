@@ -336,11 +336,10 @@ fn calculate_mgu(constraints: &Constraints) -> Option<Unifier> {
 }
 
 fn main() {
-    // let x = 15 in let f(y,z) = y+z in if 0 < x then x else f(10,x)
+    // let x := 15 in let f(y,z) := y+z in if 0 < x then x else f(10,x)
     let expr_x = Expr::Var("x".to_string());
     let expr_y = Expr::Var("y".to_string());
     let expr_z = Expr::Var("z".to_string());
-    let expr_varf = Expr::Var("f".to_string());
     let expr_15 = Expr::Constant(Const::Int(15));
     let expr_10 = Expr::Constant(Const::Int(10));
     let expr_0 = Expr::Constant(Const::Int(0));
@@ -364,10 +363,7 @@ fn main() {
     let mut tf = TypeInf::new();
     let tenv = TypeEnv::new();
     let (t, constraints) = tf.type_inf(&tenv, &expr);
-    // println!("{:?}", t);
-    // println!("{:?}", constraints);
     let unifier = calculate_mgu(&constraints).expect("error");
-    // println!("{:?}", unifier);
     let mut well_typed = t;
     for u in unifier {
         well_typed = well_typed.unify(&u);
